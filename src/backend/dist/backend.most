@@ -1,0 +1,182 @@
+// Version: 4.0.0
+type AccessControlState__201339279 =
+  {
+    var adminAssigned : Bool;
+    userRoles : Map__230067015<Principal, UserRole__91647283>
+  };
+type CashflowEntry__544944324 =
+  {
+    amount : Rupiah__748931259;
+    date : Timestamp__725804286;
+    entryType : EntryType__832063952;
+    id : Id__604508663;
+    note : Text;
+    source : EntrySource__827435935
+  };
+type CashflowEntry__984476777 =
+  {
+    amount : Rupiah__557963442;
+    date : Timestamp__852426372;
+    entryType : EntryType__745334458;
+    id : Id__989112576;
+    note : Text;
+    source : EntrySource__968777773
+  };
+type Counters__446932033 =
+  {
+    var nextCashflowId : Id__604508663;
+    var nextProductId : Id__604508663;
+    var nextRestockId : Id__604508663;
+    var nextTransactionId : Id__604508663
+  };
+type Data__44217153<K, V> = {var count : Nat__227979830; kvs : [var ?(K, V)]};
+type EntrySource__827435935 = {#manual; #restock; #transaksi};
+type EntrySource__968777773 = {#manual; #restock; #transaksi};
+type EntryType__745334458 = {#keluar; #masuk};
+type EntryType__832063952 = {#keluar; #masuk};
+type Id__1018199469 = Id__389469852;
+type Id__389469852 = Nat;
+type Id__604508663 = Nat;
+type Id__840542420 = Id__389469852;
+type Id__852191918 = Id__389469852;
+type Id__989112576 = Id__389469852;
+type Internal__283199666<K, V> =
+  {children : [var ?Node__204828119<K, V>]; data : Data__44217153<K, V>};
+type Leaf__598469445<K, V> = {data : Data__44217153<K, V>};
+type List__355132335<T> =
+  {
+    var blockIndex : Nat__227979830;
+    var blocks : [var [var ?T]];
+    var elementIndex : Nat__227979830
+  };
+type List__836382695<T> = List__355132335<T>;
+type Map__230067015<K, V> = Map__405889023<K, V>;
+type Map__405889023<K, V> = Map__603270868<K, V>;
+type Map__603270868<K, V> =
+  {var root : Node__204828119<K, V>; var size : Nat__227979830};
+type Nat__227979830 = Nat__920180692;
+type Nat__920180692 = Nat;
+type NewActor__705461471 =
+  {
+    accessControlState : AccessControlState__201339279;
+    cashflow : List__836382695<CashflowEntry__544944324>;
+    counters : Counters__446932033;
+    products : Map__230067015<Id__604508663, Product__351928318>;
+    restocks : List__836382695<Restock__117834249>;
+    transactions : List__836382695<Transaction__320919829>
+  };
+type Node__204828119<K, V> =
+  {#internal : Internal__283199666<K, V>; #leaf : Leaf__598469445<K, V>};
+type OldActor__542196375 = {};
+type Product__351928318 =
+  {
+    cost : Rupiah__748931259;
+    id : Id__604508663;
+    name : Text;
+    price : Rupiah__748931259;
+    stock : Nat
+  };
+type Product__750902660 =
+  {
+    cost : Rupiah__435934129;
+    id : Id__840542420;
+    name : Text;
+    price : Rupiah__435934129;
+    stock : Nat
+  };
+type Restock__117834249 =
+  {
+    cost : Rupiah__748931259;
+    date : Timestamp__725804286;
+    id : Id__604508663;
+    productId : Id__604508663;
+    productName : Text;
+    qty : Nat;
+    supplier : Text
+  };
+type Restock__749097473 =
+  {
+    cost : Rupiah__1053170553;
+    date : Timestamp__325755335;
+    id : Id__1018199469;
+    productId : Id__1018199469;
+    productName : Text;
+    qty : Nat;
+    supplier : Text
+  };
+type Rupiah__1053170553 = Rupiah__490350571;
+type Rupiah__435934129 = Rupiah__490350571;
+type Rupiah__490350571 = Nat;
+type Rupiah__557963442 = Rupiah__490350571;
+type Rupiah__748931259 = Nat;
+type Rupiah__868744052 = Rupiah__490350571;
+type Status__363930933 = {#baru; #kirim; #proses; #selesai};
+type Status__487073846 = {#baru; #kirim; #proses; #selesai};
+type Timestamp__223287625 = Timestamp__301639476;
+type Timestamp__301639476 = Int;
+type Timestamp__325755335 = Timestamp__301639476;
+type Timestamp__725804286 = Int;
+type Timestamp__852426372 = Timestamp__301639476;
+type Transaction__320919829 =
+  {
+    date : Timestamp__725804286;
+    id : Id__604508663;
+    orderNo : Text;
+    productId : Id__604508663;
+    productName : Text;
+    qty : Nat;
+    status : Status__487073846;
+    total : Rupiah__748931259
+  };
+type Transaction__822992244 =
+  {
+    date : Timestamp__223287625;
+    id : Id__852191918;
+    orderNo : Text;
+    productId : Id__852191918;
+    productName : Text;
+    qty : Nat;
+    status : Status__363930933;
+    total : Rupiah__868744052
+  };
+type UserRole__91647283 = {#admin; #guest; #user};
+{
+  "20260929_000000" : OldActor__542196375 -> NewActor__705461471
+}
+actor  {
+  stable accessControlState :
+    {
+      var adminAssigned : Bool;
+      userRoles : Map__230067015<Principal, UserRole__91647283>
+    };
+  stable cashflow :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?CashflowEntry__984476777]];
+      var elementIndex : Nat__227979830
+    };
+  stable counters :
+    {
+      var nextCashflowId : Id__389469852;
+      var nextProductId : Id__389469852;
+      var nextRestockId : Id__389469852;
+      var nextTransactionId : Id__389469852
+    };
+  stable products :
+    {
+      var root : Node__204828119<Id__389469852, Product__750902660>;
+      var size : Nat__227979830
+    };
+  stable restocks :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?Restock__749097473]];
+      var elementIndex : Nat__227979830
+    };
+  stable transactions :
+    {
+      var blockIndex : Nat__227979830;
+      var blocks : [var [var ?Transaction__822992244]];
+      var elementIndex : Nat__227979830
+    }
+};

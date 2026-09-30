@@ -1,0 +1,262 @@
+type Value = 
+ variant {
+   "bool": bool;
+   float: float64;
+   "int": int;
+   "nat": nat;
+   "null";
+   "text": text;
+ };
+type UserRole = 
+ variant {
+   admin;
+   guest;
+   user;
+ };
+type TransactionError = 
+ variant {
+   insufficientStock: record {
+                        available: nat;
+                        requested: nat;
+                      };
+   invalidQty;
+   notFound: Id;
+   productNotFound: Id;
+ };
+type Transaction = 
+ record {
+   date: Timestamp;
+   id: Id;
+   orderNo: text;
+   productId: Id;
+   productName: text;
+   qty: nat;
+   status: Status;
+   total: Rupiah;
+ };
+type Timestamp = int;
+type Status = 
+ variant {
+   baru;
+   kirim;
+   proses;
+   selesai;
+ };
+type Rupiah = nat;
+type Result__1 = 
+ record {
+   hasMore: bool;
+   rows: vec vec Cell;
+ };
+type Result_4 = 
+ variant {
+   err: Error;
+   ok;
+ };
+type Result_3 = 
+ variant {
+   err: CashflowError;
+   ok: CashflowEntry;
+ };
+type Result_2 = 
+ variant {
+   err: ProductError;
+   ok: Id;
+ };
+type Result_1 = 
+ variant {
+   err: RestockError;
+   ok: Restock;
+ };
+type Result = 
+ variant {
+   err: TransactionError;
+   ok: Transaction;
+ };
+type RestockError = 
+ variant {
+   invalidQty;
+   productNotFound: Id;
+ };
+type Restock = 
+ record {
+   cost: Rupiah;
+   date: Timestamp;
+   id: Id;
+   productId: Id;
+   productName: text;
+   qty: nat;
+   supplier: text;
+ };
+type ProductView = 
+ record {
+   cost: Rupiah;
+   id: Id;
+   name: text;
+   price: Rupiah;
+   sold: nat;
+   stock: nat;
+ };
+type ProductError = 
+ variant {
+   emptyName;
+   notFound: Id;
+ };
+type NewTransaction = 
+ record {
+   orderNo: text;
+   productId: Id;
+   qty: nat;
+   status: Status;
+ };
+type NewRestock = 
+ record {
+   cost: Rupiah;
+   productId: Id;
+   qty: nat;
+   supplier: text;
+ };
+type NewProduct = 
+ record {
+   cost: opt Rupiah;
+   name: text;
+   price: opt Rupiah;
+   stock: opt nat;
+ };
+type NewCashflowEntry = 
+ record {
+   amount: Rupiah;
+   entryType: EntryType;
+   note: text;
+ };
+type ImportSummary = 
+ record {
+   details: vec ImportSkip;
+   skipped: nat;
+   succeeded: nat;
+ };
+type ImportSkipReason = 
+ variant {
+   emptyLine;
+   invalidDate: text;
+   invalidNumber: text;
+   invalidRow;
+ };
+type ImportSkip = 
+ record {
+   line: nat;
+   reason: ImportSkipReason;
+ };
+type Id = nat;
+type Error = 
+ variant {
+   AmbiguousAttribute: record {
+                         field: text;
+                         sources: vec text;
+                       };
+   FrontendOriginMismatch: record {
+                             expected: vec text;
+                             got: text;
+                           };
+   FrontendOriginsNotConfigured;
+   MalformedCandid;
+   MissingField: text;
+   MixedSsoSources: record {
+                      otherKeys: vec text;
+                      ssoKeys: vec text;
+                    };
+   NoAttributes;
+   Stale: record {ageNs: nat;};
+   UnknownNonce;
+   UntrustedSsoSource: record {domain: text;};
+ };
+type EntryType = 
+ variant {
+   keluar;
+   masuk;
+ };
+type EntrySource = 
+ variant {
+   manual;
+   restock;
+   transaksi;
+ };
+type DashboardSummary = 
+ record {
+   labaKotor: int;
+   omzet: Rupiah;
+   produkStokMenipis: nat;
+   saldoKas: int;
+ };
+type DashboardData = 
+ record {
+   lowStockProducts: vec ProductView;
+   recentTransactions: vec Transaction;
+   summary: DashboardSummary;
+ };
+type Cell = 
+ record {
+   name: text;
+   value: Value;
+ };
+type CashflowRow = 
+ record {
+   amount: Rupiah;
+   balance: int;
+   date: Timestamp;
+   entryType: EntryType;
+   id: Id;
+   note: text;
+   source: EntrySource;
+ };
+type CashflowError = variant {invalidAmount;};
+type CashflowEntry = 
+ record {
+   amount: Rupiah;
+   date: Timestamp;
+   entryType: EntryType;
+   id: Id;
+   note: text;
+   source: EntrySource;
+ };
+service : {
+  _initialize_access_control: () -> ();
+  _internet_identity_sign_in_finish: () -> (Result_4);
+  _internet_identity_sign_in_start: () -> (blob);
+  assignCallerUserRole: (user: principal, role: UserRole) -> ();
+  /// Record a manual cash entry (in or out).
+  createCashflowEntry: (input: NewCashflowEntry) -> (Result_3);
+  /// Create a product. Numeric fields may be omitted and default to 0.
+  createProduct: (input: NewProduct) -> (Result_2);
+  /// Record a restock. Increases stock, updates the product cost, and records
+  /// a matching cash-out entry.
+  createRestock: (input: NewRestock) -> (Result_1);
+  /// Create a manual transaction. Validates stock, decrements it, and records
+  /// a matching cash-in entry.
+  createTransaction: (input: NewTransaction) -> (Result);
+  /// Delete a product. Returns false when it does not exist.
+  deleteProduct: (id: Id) -> (bool);
+  execute: (qJson: text) -> (Result__1) query;
+  /// Return the backend's public API documentation as Markdown.
+  getApiDoc: () -> (text) query;
+  getCallerUserRole: () -> (UserRole) query;
+  /// Current total cash balance.
+  getCashBalance: () -> (int) query;
+  /// Summary cards plus recent transactions and low-stock products.
+  getDashboard: () -> (DashboardData) query;
+  /// Import a raw TAB-separated paste. Returns a per-run summary of succeeded
+  /// and skipped rows.
+  importTransactions: (raw: text) -> (ImportSummary);
+  isCallerAdmin: () -> (bool) query;
+  /// List every cash entry ordered by date ascending with a running balance.
+  listCashflow: () -> (vec CashflowRow) query;
+  /// List every product with its derived sold quantity.
+  listProducts: () -> (vec ProductView) query;
+  /// List all restocks, newest first.
+  listRestocks: () -> (vec Restock) query;
+  /// List all transactions, newest first.
+  listTransactions: () -> (vec Transaction) query;
+  schema: () -> (text) query;
+  /// Change a transaction's status. Does not affect stock.
+  updateTransactionStatus: (id: Id, status: Status) -> (Result);
+}

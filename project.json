@@ -1,0 +1,20 @@
+{
+  "overview": "Alat pencatatan bisnis online untuk UMKM: kelola produk, stok, transaksi penjualan, restock, dan arus kas dalam satu tempat.",
+  "features": [
+    "Dashboard ringkasan omzet, laba kotor, saldo kas, dan stok menipis",
+    "Kelola produk dan stok dengan harga jual serta harga modal",
+    "Catat transaksi penjualan manual dan ubah status pesanan",
+    "Impor massal transaksi dengan paste dari spreadsheet",
+    "Catat restock dan perbarui harga modal otomatis",
+    "Buku kas dengan saldo berjalan dan catatan manual"
+  ],
+  "category": "business-management",
+  "tags": [
+    "umkm",
+    "inventory",
+    "sales",
+    "cashflow",
+    "indonesian"
+  ],
+  "last_updated": "2026-09-29T11:55:29.460Z"
+}

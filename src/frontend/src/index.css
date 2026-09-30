@@ -1,0 +1,195 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Plus Jakarta Sans";
+  src: url("/assets/fonts/PlusJakartaSans.woff2") format("woff2");
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Geist Mono";
+  src: url("/assets/fonts/GeistMono.woff2") format("woff2");
+  font-display: swap;
+}
+
+@layer base {
+  :root {
+    --font-display: "Plus Jakarta Sans", sans-serif;
+    --font-body: "Plus Jakarta Sans", sans-serif;
+    --font-mono: "Geist Mono", monospace;
+    --radius: 0.5rem;
+
+    /* Light — "Buku Kas" warm paper */
+    --background: 0.985 0.004 95;
+    --foreground: 0.22 0.02 260;
+    --card: 1.0 0.002 95;
+    --card-foreground: 0.22 0.02 260;
+    --popover: 1.0 0.002 95;
+    --popover-foreground: 0.22 0.02 260;
+
+    /* Primary — deep teal, calm + trustworthy */
+    --primary: 0.4 0.09 195;
+    --primary-foreground: 0.985 0.005 195;
+
+    --secondary: 0.955 0.008 220;
+    --secondary-foreground: 0.3 0.02 240;
+    --muted: 0.955 0.008 220;
+    --muted-foreground: 0.48 0.015 240;
+
+    /* Accent — warm amber, used sparingly for highlights */
+    --accent: 0.72 0.14 78;
+    --accent-foreground: 0.24 0.04 60;
+
+    /* Money semantics */
+    --success: 0.5 0.13 158;
+    --success-foreground: 0.985 0.005 158;
+    --warning: 0.72 0.15 78;
+    --warning-foreground: 0.24 0.04 60;
+    --destructive: 0.5 0.18 25;
+    --destructive-foreground: 0.985 0.005 25;
+
+    --border: 0.9 0.008 230;
+    --input: 0.9 0.008 230;
+    --ring: 0.4 0.09 195;
+
+    --chart-1: 0.4 0.09 195;
+    --chart-2: 0.5 0.13 158;
+    --chart-3: 0.5 0.18 25;
+    --chart-4: 0.72 0.14 78;
+    --chart-5: 0.55 0.1 280;
+
+    --sidebar: 0.975 0.006 210;
+    --sidebar-foreground: 0.22 0.02 260;
+    --sidebar-primary: 0.4 0.09 195;
+    --sidebar-primary-foreground: 0.985 0.005 195;
+    --sidebar-accent: 0.93 0.012 210;
+    --sidebar-accent-foreground: 0.3 0.02 240;
+    --sidebar-border: 0.9 0.008 230;
+    --sidebar-ring: 0.4 0.09 195;
+
+    /* Non-color tokens */
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.42 0.09 195),
+      oklch(0.36 0.08 210)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.985 0.004 95),
+      oklch(0.965 0.008 210)
+    );
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 0.18 0.014 245;
+    --foreground: 0.94 0.008 220;
+    --card: 0.22 0.016 245;
+    --card-foreground: 0.94 0.008 220;
+    --popover: 0.24 0.016 245;
+    --popover-foreground: 0.94 0.008 220;
+
+    --primary: 0.72 0.1 195;
+    --primary-foreground: 0.17 0.014 245;
+
+    --secondary: 0.26 0.016 245;
+    --secondary-foreground: 0.86 0.008 220;
+    --muted: 0.26 0.016 245;
+    --muted-foreground: 0.62 0.012 230;
+
+    --accent: 0.78 0.13 78;
+    --accent-foreground: 0.18 0.03 60;
+
+    --success: 0.72 0.13 158;
+    --success-foreground: 0.17 0.014 158;
+    --warning: 0.78 0.13 78;
+    --warning-foreground: 0.18 0.03 60;
+    --destructive: 0.68 0.16 25;
+    --destructive-foreground: 0.17 0.014 25;
+
+    --border: 0.3 0.016 245;
+    --input: 0.3 0.016 245;
+    --ring: 0.72 0.1 195;
+
+    --chart-1: 0.72 0.1 195;
+    --chart-2: 0.72 0.13 158;
+    --chart-3: 0.68 0.16 25;
+    --chart-4: 0.78 0.13 78;
+    --chart-5: 0.68 0.11 280;
+
+    --sidebar: 0.2 0.016 245;
+    --sidebar-foreground: 0.94 0.008 220;
+    --sidebar-primary: 0.72 0.1 195;
+    --sidebar-primary-foreground: 0.17 0.014 245;
+    --sidebar-accent: 0.26 0.016 245;
+    --sidebar-accent-foreground: 0.86 0.008 220;
+    --sidebar-border: 0.3 0.016 245;
+    --sidebar-ring: 0.72 0.1 195;
+
+    --gradient-primary: linear-gradient(
+      135deg,
+      oklch(0.72 0.1 195),
+      oklch(0.62 0.1 210)
+    );
+    --gradient-subtle: linear-gradient(
+      180deg,
+      oklch(0.18 0.014 245),
+      oklch(0.22 0.016 245)
+    );
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+    font-feature-settings: "cv11", "ss01";
+  }
+  /* Tabular figures for money tables */
+  .num,
+  table {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum";
+  }
+}
+
+@layer utilities {
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+  .transition-fast {
+    transition: var(--transition-fast);
+  }
+  .gradient-primary {
+    background-image: var(--gradient-primary);
+  }
+  .gradient-subtle {
+    background-image: var(--gradient-subtle);
+  }
+  .text-success {
+    color: oklch(var(--success));
+  }
+  .text-warning {
+    color: oklch(var(--warning));
+  }
+  .bg-success-soft {
+    background-color: oklch(var(--success) / 0.12);
+  }
+  .bg-destructive-soft {
+    background-color: oklch(var(--destructive) / 0.1);
+  }
+  .bg-warning-soft {
+    background-color: oklch(var(--warning) / 0.14);
+  }
+  .shadow-subtle {
+    box-shadow: 0 1px 2px 0 oklch(0.2 0.02 245 / 0.05), 0 1px 3px 0
+      oklch(0.2 0.02 245 / 0.04);
+  }
+  .shadow-elevated {
+    box-shadow: 0 4px 12px -2px oklch(0.2 0.02 245 / 0.08), 0 2px 6px -2px
+      oklch(0.2 0.02 245 / 0.05);
+  }
+}
